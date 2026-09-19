@@ -112,6 +112,7 @@ This plan implements a serverless recipe generator using AWS CDK, Lambda, API Ga
 
 ## Notes
 
+> **Status update (2026-09-18):** Tasks 12, 13, and 14 deferred due to Kiro credit limit reached (plan resets 9/30). Tasks 1-11 (full infrastructure + frontend implementation) are complete and verified. Deployment proceeding without automated test coverage; tests to be added once credits reset.
 - Tasks marked with `*` are optional and can be skipped for faster MVP
 - Each task references specific requirements for traceability
 - Implementation uses TypeScript throughout (CDK, Lambda, Frontend)
