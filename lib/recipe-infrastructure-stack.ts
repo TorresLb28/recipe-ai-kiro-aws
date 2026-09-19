@@ -114,23 +114,22 @@ export class RecipeInfrastructureStack extends cdk.Stack {
     // Fulfills REQ-9.1, REQ-9.2, REQ-9.9, REQ-9.10, REQ-9.13, REQ-6.1, REQ-6.2, REQ-6.3, REQ-6.4, REQ-6.5
 
     this.api = new apigatewayv2.HttpApi(this, 'RecipeApi', {
-      apiName: 'recipe-ai-api',
-      // CORS configuration referencing CloudFront domain (REQ-9.13)
-      corsPreflight: {
-        allowOrigins: [`https://${this.distribution.distributionDomainName}`],
-        allowMethods: [apigatewayv2.CorsHttpMethod.POST, apigatewayv2.CorsHttpMethod.OPTIONS],
-        allowHeaders: ['Content-Type'],
-        maxAge: cdk.Duration.seconds(300)
-      },
-      // Create default stage with throttling configuration (REQ-9.9, REQ-9.10, REQ-6.1, REQ-6.2)
-      createDefaultStage: true,
-      defaultStage: {
-        throttle: {
-          rateLimit: 3,      // 3 requests per second at stage level (REQ-9.9, REQ-6.1, REQ-6.2)
-          burstLimit: 10     // Burst capacity of 10 requests (REQ-9.10)
-        }
-      }
-    });
+  apiName: 'recipe-ai-api',
+  corsPreflight: {
+    allowOrigins: [`https://${this.distribution.distributionDomainName}`],
+    allowMethods: [apigatewayv2.CorsHttpMethod.POST, apigatewayv2.CorsHttpMethod.OPTIONS],
+    allowHeaders: ['Content-Type'],
+    maxAge: cdk.Duration.seconds(300)
+  },
+  createDefaultStage: true
+});
+
+// Configure throttling on the default stage via L1 escape hatch
+const cfnStage = this.api.defaultStage!.node.defaultChild as apigatewayv2.CfnStage;
+cfnStage.defaultRouteSettings = {
+  throttlingRateLimit: 3,
+  throttlingBurstLimit: 10
+};
 
     // Add POST /generate route with Lambda integration (REQ-9.2)
     this.api.addRoutes({
