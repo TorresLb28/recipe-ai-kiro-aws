@@ -1,0 +1,420 @@
+﻿/* Mobile-first responsive design per REQ-5 */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --primary-color: #4CAF50;
+  --secondary-color: #2196F3;
+  --error-color: #f44336;
+  --text-color: #333333;
+  --text-light: #666666;
+  --border-color: #e0e0e0;
+  --background-color: #fafafa;
+  --spacing-unit: 8px;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
+    Ubuntu, Cantarell, 'Helvetica Neue', sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  color: var(--text-color);
+  background-color: var(--background-color);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Primary viewport: 375px - 430px (REQ-5.1) */
+@media (max-width: 430px) {
+  .app-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    padding: var(--spacing-unit);
+  }
+
+  .app-header {
+    text-align: center;
+    margin-bottom: calc(var(--spacing-unit) * 3);
+  }
+
+  .app-header h1 {
+    font-size: 1.75rem;
+    margin-bottom: var(--spacing-unit);
+  }
+
+  .app-header p {
+    font-size: 0.95rem;
+    color: var(--text-light);
+  }
+
+  .app-main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: calc(var(--spacing-unit) * 2);
+  }
+
+  /* Text sizing (REQ-5.3) */
+  body, input, textarea, button {
+    font-size: 16px;
+  }
+
+  /* Interactive elements: 44px minimum touch target (REQ-5.4) */
+  button, input[type="button"], input[type="submit"], textarea {
+    min-height: 44px;
+    padding: var(--spacing-unit);
+    border-radius: 4px;
+    border: 1px solid var(--border-color);
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  /* Element spacing (REQ-5.5) */
+  button + button,
+  input + input,
+  textarea + button {
+    margin-top: calc(var(--spacing-unit));
+  }
+
+  /* Text wrapping (REQ-5.6) */
+  p, h1, h2, h3, h4, h5, h6 {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+  }
+}
+
+/* Tablet/desktop: 431px - 1920px (REQ-5.2) */
+@media (min-width: 431px) {
+  .app-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: calc(var(--spacing-unit) * 3);
+  }
+
+  .app-header {
+    text-align: center;
+    margin-bottom: calc(var(--spacing-unit) * 4);
+  }
+
+  .app-header h1 {
+    font-size: 2.5rem;
+    margin-bottom: var(--spacing-unit);
+  }
+
+  .app-header p {
+    font-size: 1.1rem;
+    color: var(--text-light);
+  }
+
+  .app-main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: calc(var(--spacing-unit) * 3);
+  }
+
+  /* Text sizing */
+  body, input, textarea, button {
+    font-size: 16px;
+  }
+
+  /* Interactive elements */
+  button, input[type="button"], input[type="submit"], textarea {
+    min-height: 44px;
+    padding: calc(var(--spacing-unit) * 1.5);
+    border-radius: 6px;
+    border: 1px solid var(--border-color);
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  /* Element spacing */
+  button + button,
+  input + input,
+  textarea + button {
+    margin-top: calc(var(--spacing-unit) * 2);
+  }
+}
+
+/* Universal styles */
+
+.app-header {
+  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+  color: white;
+  padding: calc(var(--spacing-unit) * 2);
+  border-radius: 8px;
+}
+
+.app-header h1 {
+  color: white;
+}
+
+.app-header p {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.app-main {
+  flex: 1;
+}
+
+.app-footer {
+  text-align: center;
+  margin-top: calc(var(--spacing-unit) * 4);
+  padding-top: calc(var(--spacing-unit) * 2);
+  border-top: 1px solid var(--border-color);
+  color: var(--text-light);
+  font-size: 0.9rem;
+}
+
+/* Form inputs */
+textarea {
+  font-family: inherit;
+  resize: vertical;
+  width: 100%;
+}
+
+textarea:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.1);
+}
+
+/* Buttons */
+button {
+  background-color: var(--primary-color);
+  color: white;
+  font-weight: 600;
+  border: none;
+}
+
+button:hover:not(:disabled) {
+  background-color: #45a049;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+button:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+button.secondary {
+  background-color: var(--secondary-color);
+}
+
+button.secondary:hover:not(:disabled) {
+  background-color: #0b7dda;
+}
+
+button.error {
+  background-color: var(--error-color);
+}
+
+button.error:hover:not(:disabled) {
+  background-color: #da190b;
+}
+
+/* Error display */
+.error-container {
+  padding: calc(var(--spacing-unit) * 2);
+  background-color: #ffebee;
+  border: 1px solid var(--error-color);
+  border-radius: 6px;
+  color: var(--error-color);
+}
+
+.error-container p {
+  margin-bottom: var(--spacing-unit);
+}
+
+.error-container button {
+  background-color: var(--error-color);
+  margin-top: var(--spacing-unit);
+}
+
+/* Loading spinner */
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: calc(var(--spacing-unit) * 4);
+}
+
+.spinner {
+  border: 4px solid var(--border-color);
+  border-top: 4px solid var(--primary-color);
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.loading-text {
+  margin-top: var(--spacing-unit);
+  color: var(--text-light);
+}
+
+/* Character counter */
+.character-count {
+  font-size: 0.9rem;
+  color: var(--text-light);
+  margin-top: calc(var(--spacing-unit) * 0.5);
+}
+
+.character-count.warning {
+  color: #ff9800;
+}
+
+/* Recipe display */
+.recipe-container {
+  background-color: white;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: calc(var(--spacing-unit) * 2);
+}
+
+.recipe-title {
+  font-size: 1.75rem;
+  color: var(--primary-color);
+  margin-bottom: var(--spacing-unit);
+}
+
+.recipe-description {
+  font-size: 1rem;
+  color: var(--text-light);
+  margin-bottom: calc(var(--spacing-unit) * 2);
+  font-style: italic;
+}
+
+.recipe-meta {
+  display: flex;
+  gap: calc(var(--spacing-unit) * 2);
+  margin-bottom: calc(var(--spacing-unit) * 2);
+  flex-wrap: wrap;
+}
+
+.recipe-meta-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.recipe-meta-label {
+  font-weight: 600;
+  color: var(--text-light);
+  font-size: 0.9rem;
+}
+
+.recipe-meta-value {
+  font-size: 1.1rem;
+  color: var(--text-color);
+}
+
+.recipe-section {
+  margin-bottom: calc(var(--spacing-unit) * 2);
+}
+
+.recipe-section h2 {
+  font-size: 1.25rem;
+  color: var(--text-color);
+  margin-bottom: var(--spacing-unit);
+  border-bottom: 2px solid var(--primary-color);
+  padding-bottom: var(--spacing-unit);
+}
+
+.ingredients-list {
+  list-style: none;
+}
+
+.ingredients-list li {
+  padding: var(--spacing-unit);
+  margin-bottom: calc(var(--spacing-unit) * 0.5);
+  border-left: 4px solid var(--border-color);
+}
+
+.ingredients-list li.you-have {
+  border-left-color: var(--primary-color);
+  background-color: rgba(76, 175, 80, 0.05);
+}
+
+.ingredients-list li.you-may-need {
+  border-left-color: var(--secondary-color);
+  background-color: rgba(33, 150, 243, 0.05);
+}
+
+.ingredients-category-label {
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--text-light);
+}
+
+.steps-list {
+  list-style: none;
+  counter-reset: step-counter;
+}
+
+.steps-list li {
+  counter-increment: step-counter;
+  padding-left: calc(var(--spacing-unit) * 4);
+  margin-bottom: calc(var(--spacing-unit) * 1.5);
+  position: relative;
+}
+
+.steps-list li::before {
+  content: counter(step-counter);
+  position: absolute;
+  left: 0;
+  top: 0;
+  background-color: var(--primary-color);
+  color: white;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+/* Accessibility */
+button:focus-visible,
+textarea:focus-visible,
+input:focus-visible {
+  outline: 2px solid var(--primary-color);
+  outline-offset: 2px;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: more) {
+  :root {
+    --text-color: #000000;
+    --border-color: #666666;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
