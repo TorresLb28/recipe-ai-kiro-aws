@@ -4,12 +4,15 @@ import * as iam from 'aws-cdk-lib/aws-iam';
 import * as s3 from 'aws-cdk-lib/aws-s3';
 import * as cloudfront from 'aws-cdk-lib/aws-cloudfront';
 import * as origins from 'aws-cdk-lib/aws-cloudfront-origins';
+import * as apigatewayv2 from 'aws-cdk-lib/aws-apigatewayv2';
+import * as integrations from 'aws-cdk-lib/aws-apigatewayv2-integrations';
 import { Construct } from 'constructs';
 import * as path from 'path';
 
 export class RecipeInfrastructureStack extends cdk.Stack {
   public readonly recipeFunction: lambda.Function;
   public readonly distribution: cloudfront.Distribution;
+  public readonly api: apigatewayv2.HttpApi;
 
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
@@ -107,8 +110,46 @@ export class RecipeInfrastructureStack extends cdk.Stack {
       }
     }));
 
-    // Stack resources will be added in subsequent tasks:
-    // - HTTP API Gateway (Task 6)
-    // - Stack outputs (Task 7)
+    // Task 6: Create HTTP API Gateway with throttling and CORS
+    // Fulfills REQ-9.1, REQ-9.2, REQ-9.9, REQ-9.10, REQ-9.13, REQ-6.1, REQ-6.2, REQ-6.3, REQ-6.4, REQ-6.5
+
+    this.api = new apigatewayv2.HttpApi(this, 'RecipeApi', {
+      apiName: 'recipe-ai-api',
+      // CORS configuration referencing CloudFront domain (REQ-9.13)
+      corsPreflight: {
+        allowOrigins: [`https://${this.distribution.distributionDomainName}`],
+        allowMethods: [apigatewayv2.CorsHttpMethod.POST, apigatewayv2.CorsHttpMethod.OPTIONS],
+        allowHeaders: ['Content-Type'],
+        maxAge: cdk.Duration.seconds(300)
+      },
+      // Create default stage with throttling configuration (REQ-9.9, REQ-9.10, REQ-6.1, REQ-6.2)
+      createDefaultStage: true,
+      defaultStage: {
+        throttle: {
+          rateLimit: 3,      // 3 requests per second at stage level (REQ-9.9, REQ-6.1, REQ-6.2)
+          burstLimit: 10     // Burst capacity of 10 requests (REQ-9.10)
+        }
+      }
+    });
+
+    // Add POST /generate route with Lambda integration (REQ-9.2)
+    this.api.addRoutes({
+      path: '/generate',
+      methods: [apigatewayv2.HttpMethod.POST],
+      integration: new integrations.HttpLambdaIntegration('RecipeIntegration', this.recipeFunction)
+    });
+
+    // Task 7: Add stack outputs for deployment
+    // Fulfills REQ-9 (deployment visibility)
+    
+    new cdk.CfnOutput(this, 'ApiEndpoint', {
+      value: this.api.apiEndpoint,
+      description: 'Recipe API endpoint URL'
+    });
+
+    new cdk.CfnOutput(this, 'CloudFrontUrl', {
+      value: `https://${this.distribution.distributionDomainName}`,
+      description: 'CloudFront distribution URL for frontend'
+    });
   }
 }

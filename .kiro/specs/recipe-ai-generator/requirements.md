@@ -107,7 +107,7 @@ Recipe AI Generator is a web application that generates personalized recipes fro
 3. WHEN the Throttle_Limiter rejects a request, THE Recipe_API SHALL return an HTTP 429 status code
 4. WHEN the Throttle_Limiter rejects a request, THE Recipe_API SHALL return the default error response provided by API Gateway HTTP API for throttled requests (custom Retry-After header and custom JSON error body are not natively supported by HTTP API v2 without additional configuration, and are out of scope for this MVP)
 5. WHEN the Recipe_Generator_UI receives an HTTP 429 response, THE Recipe_Generator_UI SHALL treat any 429 status code as a rate-limit event regardless of response body format, and display a generic wait message to the user
-6. WHEN the Recipe_Generator_UI receives an HTTP 429 response, THE Recipe_Generator_UI SHALL display a message instructing the user to wait before submitting another request
+
 
 ### Requirement 7: Stateless Operation
 
