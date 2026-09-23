@@ -1,4 +1,4 @@
-﻿#!/usr/bin/env node
+#!/usr/bin/env node
 import * as cdk from 'aws-cdk-lib';
 import { RecipeInfrastructureStack } from '../lib/recipe-infrastructure-stack';
 
