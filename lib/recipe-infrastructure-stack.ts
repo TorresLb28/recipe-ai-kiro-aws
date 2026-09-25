@@ -1,5 +1,6 @@
 ﻿import * as cdk from 'aws-cdk-lib';
 import * as lambda from 'aws-cdk-lib/aws-lambda';
+import { NodejsFunction } from 'aws-cdk-lib/aws-lambda-nodejs';
 import * as iam from 'aws-cdk-lib/aws-iam';
 import * as s3 from 'aws-cdk-lib/aws-s3';
 import * as cloudfront from 'aws-cdk-lib/aws-cloudfront';
@@ -19,15 +20,14 @@ export class RecipeInfrastructureStack extends cdk.Stack {
 
     // Task 4: Create Lambda function for recipe generation
     // Fulfills REQ-9.3, REQ-9.4, REQ-9.5, REQ-9.6
-    this.recipeFunction = new lambda.Function(this, 'RecipeFunction', {
+    this.recipeFunction = new NodejsFunction(this, 'RecipeFunction', {
       functionName: 'recipe-ai-service',
       runtime: lambda.Runtime.NODEJS_20_X,
-      handler: 'index.handler',
-      code: lambda.Code.fromAsset(path.join(__dirname, '../lambda')),
+      handler: 'handler',
+      entry: path.join(__dirname, '../lambda/src/index.ts'),
       timeout: cdk.Duration.seconds(30),
       memorySize: 512,
       environment: {
-        // Model ARN from REQ-2.2
         BEDROCK_MODEL_ARN: 'arn:aws:bedrock:us-east-1:986119050917:inference-profile/global.anthropic.claude-haiku-4-5-20251001-v1:0'
       }
     });
