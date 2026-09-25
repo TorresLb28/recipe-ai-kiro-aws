@@ -36,7 +36,10 @@ export class RecipeInfrastructureStack extends cdk.Stack {
     this.recipeFunction.addToRolePolicy(new iam.PolicyStatement({
       effect: iam.Effect.ALLOW,
       actions: ['bedrock:InvokeModel'],
-      resources: ['arn:aws:bedrock:us-east-1:986119050917:inference-profile/global.anthropic.claude-haiku-4-5-20251001-v1:0']
+      resources: [
+        'arn:aws:bedrock:us-east-1:986119050917:inference-profile/global.anthropic.claude-haiku-4-5-20251001-v1:0',
+        'arn:aws:bedrock:us-east-1::foundation-model/anthropic.claude-haiku-4-5-20251001-v1:0'
+      ]
     }));
 
     // Add IAM policy: Allow CloudWatch Logs (automatic via Lambda execution role)
