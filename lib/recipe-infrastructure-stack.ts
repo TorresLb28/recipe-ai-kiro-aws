@@ -38,7 +38,7 @@ export class RecipeInfrastructureStack extends cdk.Stack {
       actions: ['bedrock:InvokeModel'],
       resources: [
         'arn:aws:bedrock:us-east-1:986119050917:inference-profile/global.anthropic.claude-haiku-4-5-20251001-v1:0',
-        'arn:aws:bedrock:us-east-1::foundation-model/anthropic.claude-haiku-4-5-20251001-v1:0'
+        'arn:aws:bedrock:*::foundation-model/anthropic.claude-haiku-4-5-20251001-v1:0'
       ]
     }));
 
